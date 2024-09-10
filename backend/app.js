@@ -2,6 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 
+console.log('here i am')
+
 // Load environment variables
 dotenv.config();
 

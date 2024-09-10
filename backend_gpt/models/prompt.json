@@ -1,0 +1,7 @@
+[
+    {
+        "prompt1": "say i have this input data:",
+        "prompt2": "user_data",
+        "prompt3": "give me a: ISELP (Individualized Social Emotional Learning Plan) based on the format below: Goals and Outcomes: Short-term: (Specify the short-term goals, such as enhancing engagement, improving conflict resolution, etc.) Long-term: (Detail long-term goals, such as developing clear pathways toward future careers, improving social-emotional skills, etc.) Champions SEL Curriculum Enhancement: Social Emotional Learning Plan for [Months] [Month 1]: (Describe the focus for the month, e.g., Health & Wellness, and outline weekly activities.) Week 1: (Activity details) Week 2: (Activity details) Week 3: (Activity details) Week 4: (Activity details) [Month 2]: (Describe the focus for the month, e.g., Community Involvement, and outline weekly activities.) Week 1: (Activity details) Week 2: (Activity details) Week 3: (Activity details) Week 4: (Activity details)"
+    }
+]

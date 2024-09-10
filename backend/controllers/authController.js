@@ -6,8 +6,8 @@ const { readDataFromFile, writeDataToFile } = require('../utils/fileUtil');
 
 // Send invite
 exports.sendInvite = async (req, res) => {
+    console.log('here in sendInvite authController.js')
     const { email } = req.body;
-
     try {
         const token = generateInviteToken(email);
 
@@ -35,6 +35,7 @@ exports.sendInvite = async (req, res) => {
 
 // Sign up with invite
 exports.signupWithInvite = async (req, res) => {
+    console.log("here at signupWithInvite controller.js")
     const { token, email, password } = req.body;
 
     try {
