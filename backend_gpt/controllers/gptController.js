@@ -1,5 +1,11 @@
-const axios = require('axios');
+const { Configuration, OpenAIApi } = require('openai');
 const promptData = require('../models/prompt.json'); // Assuming the file path is correct
+const OpenAI = require('openai');
+require('dotenv').config(); // To load environment variables
+
+const openai = new OpenAI({
+    apiKey: process.env.KEY1, // Ensure you have an environment variable set up for the API key
+});
 
 exports.gptResponse = async (req, res) => {
     try {
@@ -40,23 +46,22 @@ exports.gptResponse = async (req, res) => {
         // Combine prompt1, user_data (prompt2), and prompt3 from prompt.json
         const fullPrompt = `${promptData[0].prompt1} ${userData} ${promptData[0].prompt3}`;
 
-        // GPT API request (example using OpenAI API)
-        const gptResponse = await axios.post('https://api.openai.com/v1/completions', {
-            model: "gpt-3.5-turbo",  // Update this to the correct model
-            prompt: fullPrompt,
-            max_tokens: 500,  // Adjust as per your requirements
-            temperature: 0.7
-        }, {
-            headers: {
-                'Authorization': `Bearer YOUR_API_KEY`,  // Replace with your actual GPT API key
-                'Content-Type': 'application/json'
-            }
+        const completion = await openai.chat.completions.create({
+            model: "gpt-4", // Correct model name, "gpt-4o-mini" is not valid
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                {
+                    role: "user",
+                    content: fullPrompt,
+                },
+            ],
         });
 
         // Send the GPT response back to the user
         res.json({
             message: "ISELP Generated",
-            gpt_response: gptResponse.data.choices[0].text.trim() // Extracting the GPT response text
+            prompt:fullPrompt,
+            gpt_response: completion.choices[0].message.content // Extracting the GPT response text
         });
 
     } catch (error) {
