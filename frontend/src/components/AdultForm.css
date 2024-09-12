@@ -1,0 +1,34 @@
+/* AdultForm.css */
+.adultform-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 900px;
+  }
+  
+  .adultform-card {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .adultform-card .MuiCardContent-root {
+    padding: 20px;
+  }
+  
+  .adultform-container .MuiTypography-h3 {
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .adultform-container .MuiTextField-root {
+    margin-bottom: 20px;
+  }
+  
+  .adultform-container .MuiButton-root {
+    margin-top: 20px;
+  }
+  
+  .adultform-container .MuiGrid-root {
+    margin-top: 10px;
+  }
+  

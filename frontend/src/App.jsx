@@ -2,6 +2,7 @@ import Login from "./components/Login"
 import Iselp from "./components/Iselp";
 import SupportForm from "./components/SupportForm";
 import Schools from "./components/School";
+import AdultForm from "./components/AdultForm";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
         <Route path="/iselp" element={<Iselp />} exact/>
         <Route path="/supportform" element={<SupportForm />} exact/>
         <Route path="/schools" element={<Schools />} exact/>
+        <Route path="/adultform" element={<AdultForm />} exact/>
       </Routes>
     </Router>
   )
