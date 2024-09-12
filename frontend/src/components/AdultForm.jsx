@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Button, Container, Typography, Grid, Card, CardContent, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import studentRecords from '../data/studentRecords.json';
 import './AdultForm.css';
+import axios from 'axios';
 
 const AdultForm = () => {
   const [formData, setFormData] = useState({
@@ -49,9 +50,55 @@ const AdultForm = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = () => {
-    // Handle form submission logic here
-    console.log(formData);
+  const handleSubmit = async () => {
+    try {
+      // Build the query parameters from formData
+      const params = {
+        timestamp: new Date().toISOString(), // You can adjust this as needed
+        name: formData.name,
+        school: formData.school,
+        email: formData.email,
+        role: formData.role,
+        engagementPerformance: formData.engagementPerformance,
+        effectiveStrategies: formData.effectiveStrategies,
+        schoolSupport: formData.schoolSupport,
+        existingPrograms: formData.existingPrograms,
+        communication: formData.communication,
+        involvement: formData.involvement,
+        conflictPatterns: formData.conflictPatterns,
+        timesOfDistress: formData.timesOfDistress,
+        homeSupportSystems: formData.homeSupportSystems,
+        externalStressors: formData.externalStressors,
+      };
+  
+      // Make the GET request
+      const response = await axios.get('http://localhost:3000/api/v1/saveAdultData', { params });
+  
+      // Handle the response if needed
+      console.log('API Response:', response.data);
+  
+      // Optionally, clear the form data or provide user feedback
+      setFormData({
+        name: '',
+        email: '',
+        school: '',
+        studentName: '',
+        role: '',
+        engagementPerformance: '',
+        effectiveStrategies: '',
+        schoolSupport: '',
+        existingPrograms: '',
+        communication: '',
+        involvement: '',
+        conflictPatterns: '',
+        timesOfDistress: '',
+        homeSupportSystems: '',
+        externalStressors: '',
+      });
+    } catch (error) {
+      // Handle any errors
+      console.error('API Error:', error);
+    }
   };
 
   return (
