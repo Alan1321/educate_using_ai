@@ -1,15 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "../assets/image.png";
 import Logo from "../assets/logo.png";
 import GoogleSvg from "../assets/icons8-google.svg";
 import { FaEye } from "react-icons/fa6";
 import { FaEyeSlash } from "react-icons/fa6";
-
-
+import loginData from "../data/loginData.json"
+import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [ showPassword, setShowPassword ] = useState(false);
+  const navigate = useNavigate();
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
+  const loginHandler = (e) =>{
+    console.log(emailRef.current.value, passwordRef.current.value)
+    console.log(loginData)
+    const validLogin = loginData.find(user => user.email === emailRef.current.value && user.password === passwordRef.current.value)
+    
+    if(validLogin) {
+      navigate("/iselp")
+    }
+  }
 
   return (
     <div className="login-main">
@@ -22,40 +35,35 @@ const Login = () => {
             <img src={Logo} alt="" />
           </div>
           <div className="login-center">
-            <h2>Welcome back!</h2>
+            <h2>Welcome</h2>
             <p>Please enter your details</p>
             <form>
-              <input type="email" placeholder="Email" />
+              <input type="email" placeholder="Email" ref={emailRef}/>
               <div className="pass-input-div">
-                <input type={showPassword ? "text" : "password"} placeholder="Password" />
+                <input type={showPassword ? "text" : "password"} placeholder="Password" ref={passwordRef}/>
                 {showPassword ? <FaEyeSlash onClick={() => {setShowPassword(!showPassword)}} /> : <FaEye onClick={() => {setShowPassword(!showPassword)}} />}
-                
               </div>
 
               <div className="login-center-options">
                 <div className="remember-div">
-                  <input type="checkbox" id="remember-checkbox" />
-                  <label htmlFor="remember-checkbox">
+                  {/* <input type="checkbox" id="remember-checkbox" /> */}
+                  {/* <label htmlFor="remember-checkbox">
                     Remember for 30 days
-                  </label>
+                  </label> */}
                 </div>
-                <a href="#" className="forgot-pass-link">
+                {/* <a href="#" className="forgot-pass-link">
                   Forgot password?
-                </a>
+                </a> */}
               </div>
               <div className="login-center-buttons">
-                <button type="button">Log In</button>
-                <button type="button">
-                  <img src={GoogleSvg} alt="" />
-                  Log In with Google
-                </button>
+                <button type="button" onClick={loginHandler}>Log In</button>
               </div>
             </form>
           </div>
 
-          <p className="login-bottom-p">
+          {/* <p className="login-bottom-p">
             Don't have an account? <a href="#">Sign Up</a>
-          </p>
+          </p> */}
         </div>
       </div>
     </div>
