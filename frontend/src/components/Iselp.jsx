@@ -4,6 +4,8 @@ import axios from 'axios';
 import jsPDF from 'jspdf';
 import './Iselp.css';
 import schoolsData from "../data/schoolsData.json";
+import studentReocrds from "../data/studentRecords.json";
+import { saveJSONToFile } from './util';
 
 const Iselp = () => {
   const [formData, setFormData] = useState({

@@ -1,11 +1,14 @@
-// app.js
 const express = require('express');
+const cors = require('cors'); // Import cors
 const app = express();
 
 require('dotenv').config();
 
+// Use CORS middleware
+app.use(cors());
+
 // Import routes
-const gptRoute = require('./routes/gptRoute')
+const gptRoute = require('./routes/gptRoute');
 const loginRoute = require('./routes/loginRoute');
 
 // Use routes
