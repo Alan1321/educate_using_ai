@@ -1,8 +1,16 @@
 import React, { useState } from 'react';
 import { TextField, Checkbox, FormControlLabel, FormGroup, MenuItem, Select, InputLabel, FormControl, Button, Box, Typography } from '@mui/material';
 import './SupportForm.css';
+import { useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const SupportForm = () => {
+
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const data = location.state;
+
   const [selectedSupportTypes, setSelectedSupportTypes] = useState({
     fundraising: false,
     tutoring: false,
@@ -34,8 +42,9 @@ const SupportForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Selected Support Types:', selectedSupportTypes);
-    console.log('Selected City:', city);
+    data.supportTypes = selectedSupportTypes
+    data.city = city
+    navigate('/schools', {state:data})
   };
 
   return (
@@ -88,7 +97,7 @@ const SupportForm = () => {
       </FormControl>
 
       <Button type="submit" variant="contained" color="primary" className="submit-btn">
-        Submit
+        Next
       </Button>
     </Box>
   );

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Grid, Card, CardContent, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, Grid, Card, CardContent, Box, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
 import jsPDF from 'jspdf';
 import './Iselp.css';
+import schoolsData from "../data/schoolsData.json";
 
 const Iselp = () => {
   const [formData, setFormData] = useState({
@@ -115,20 +116,27 @@ const Iselp = () => {
               />
             </Grid>
 
-            {/* School and Email */}
+            {/* School Dropdown */}
             <Grid item xs={12} md={6}>
-              <TextField
-                label="School"
-                name="school"
-                value={formData.school}
-                onChange={handleChange}
-                fullWidth
-                required
-                variant="outlined"
-                margin="normal"
-                size="medium"
-              />
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel>School</InputLabel>
+                <Select
+                  label="School"
+                  name="school"
+                  value={formData.school}
+                  onChange={handleChange}
+                  required
+                >
+                  {schoolsData.map((school) => (
+                    <MenuItem key={school.name} value={school.name}>
+                      {school.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
+
+            {/* Email Address */}
             <Grid item xs={12} md={6}>
               <TextField
                 label="Email Address"

@@ -1,0 +1,82 @@
+[
+    {
+      "name": "Northside College Preparatory High School",
+      "address": {
+        "street": "5501 N Kedzie Ave",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60625"
+      },
+      "type": "Public",
+      "grades": "9-12",
+      "enrollment": 1070,
+      "contact": {
+        "phone": "(773) 534-3954",
+        "website": "https://www.northsideprep.org"
+      }
+    },
+    {
+      "name": "Lane Tech College Prep High School",
+      "address": {
+        "street": "2501 W Addison St",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60618"
+      },
+      "type": "Public",
+      "grades": "7-12",
+      "enrollment": 4500,
+      "contact": {
+        "phone": "(773) 534-5400",
+        "website": "https://www.lanetech.org"
+      }
+    },
+    {
+      "name": "Walter Payton College Preparatory High School",
+      "address": {
+        "street": "1034 N Wells St",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60610"
+      },
+      "type": "Public",
+      "grades": "9-12",
+      "enrollment": 1200,
+      "contact": {
+        "phone": "(773) 534-0034",
+        "website": "https://www.wpcp.org"
+      }
+    },
+    {
+      "name": "St. Ignatius College Prep",
+      "address": {
+        "street": "1076 W Roosevelt Rd",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60608"
+      },
+      "type": "Private",
+      "grades": "9-12",
+      "enrollment": 1400,
+      "contact": {
+        "phone": "(312) 421-5900",
+        "website": "https://www.ignatius.org"
+      }
+    },
+    {
+      "name": "Whitney M. Young Magnet High School",
+      "address": {
+        "street": "211 S Laflin St",
+        "city": "Chicago",
+        "state": "IL",
+        "zip": "60607"
+      },
+      "type": "Public",
+      "grades": "7-12",
+      "enrollment": 2200,
+      "contact": {
+        "phone": "(773) 534-7500",
+        "website": "https://www.wyoung.org"
+      }
+    }
+  ]

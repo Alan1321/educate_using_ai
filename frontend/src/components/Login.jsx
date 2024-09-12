@@ -21,7 +21,22 @@ const Login = () => {
     if(validLogin) {
       data.email = emailRef.current.value
       data.password = passwordRef.current.value
-      navigate("/supportform")
+      if(emailRef.current.value === 'student@selvie.com'){
+        // go to student fill up form
+        navigate("/supportform", {state: data})
+      }else if(emailRef.current.value === 'adult@selvie.com'){
+        //go to adult form
+        navigate("/supportform", {state: data})
+      }else if(emailRef.current.value === 'admin@selvie.com'){
+        
+        navigate("/supportform", {state: data})
+      }else if(emailRef.current.value === 'community@selvie.com'){
+        
+        navigate("/supportform", {state: data})
+      }else if(emailRef.current.value === 'mentor@selvie.com'){
+        
+        navigate("/supportform", {state: data})
+      }
     }
   }
 

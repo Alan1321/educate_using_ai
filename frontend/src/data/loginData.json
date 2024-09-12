@@ -1,10 +1,22 @@
 [
     {
-        "email":"admin@admin.com",
+        "email":"adult@selvie.com",
         "password":"admin"
     },
     {
-        "email":"test@test.com",
-        "password":"test"
+        "email":"student@selvie.com",
+        "password":"admin"
+    },
+    {
+        "email":"community@selvie.com",
+        "password":"admin"
+    },
+    {
+        "email":"admin@selvie.com",
+        "password":"admin"
+    },
+    {
+        "email":"mentor@selvie.com",
+        "password":"admin"
     }
 ]
