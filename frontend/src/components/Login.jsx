@@ -13,14 +13,15 @@ const Login = () => {
   const navigate = useNavigate();
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const data = {}
 
   const loginHandler = (e) =>{
-    console.log(emailRef.current.value, passwordRef.current.value)
-    console.log(loginData)
     const validLogin = loginData.find(user => user.email === emailRef.current.value && user.password === passwordRef.current.value)
     
     if(validLogin) {
-      navigate("/iselp")
+      data.email = emailRef.current.value
+      data.password = passwordRef.current.value
+      navigate("/supportform")
     }
   }
 
