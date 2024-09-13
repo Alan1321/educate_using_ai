@@ -41,13 +41,13 @@ const Admin = () => {
 
   const renderActionButton = (student) => {
     const isLoading = loading[student.studentName] || false;
-
+  
     return isPdfRecord(student) ? (
       <Button
         variant="contained"
         color="secondary"
         style={{ minWidth: '110px' }}
-        disabled={isLoading} // Disable button if loading
+        disabled // Disable the "View" button
       >
         View
       </Button>
@@ -63,6 +63,7 @@ const Admin = () => {
       </Button>
     );
   };
+  
 
   const handleGenerateClick = async (student) => {
     setLoading(prev => ({ ...prev, [student.studentName]: true }));
