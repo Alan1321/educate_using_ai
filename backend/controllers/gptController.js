@@ -10,33 +10,26 @@ const openai = new OpenAI({
     apiKey: process.env.KEY1, // Ensure you have an environment variable set up for the API key
 });
 
-// Function to save the PDF
 const savePdf = (filename, content) => {
     return new Promise((resolve, reject) => {
         const filePath = path.resolve(__dirname, '../models/pdfs/', filename);
         const doc = new pdf();
 
-        doc.pipe(fs.createWriteStream(filePath));
+        doc.pipe(fs.createWriteStream(filePath))
+            .on('finish', () => {
+                console.log(`PDF saved successfully at ${filePath}`);
+                resolve(filePath);
+            })
+            .on('error', (err) => {
+                console.error(`Error writing PDF to ${filePath}:`, err);
+                reject('Error saving PDF: ' + err);
+            });
+
         doc.text(content);
         doc.end();
-
-        doc.on('finish', () => resolve(filePath));
-        doc.on('error', (err) => reject('Error saving PDF: ' + err));
     });
 };
 
-// Function to update pdfRecords.json
-const updatePdfRecords = async (record) => {
-    const filePath = path.resolve(__dirname, '../../frontend/src/data/pdfRecords.json');
-
-    try {
-        let records = await readJsonFile(filePath);
-        records.push(record);
-        await writeJsonFile(filePath, records);
-    } catch (error) {
-        throw new Error('Failed to update pdfRecords.json: ' + error);
-    }
-};
 
 exports.gptResponse = async (req, res) => {
     console.log("Request Query:", req.query);
@@ -95,15 +88,7 @@ exports.gptResponse = async (req, res) => {
         const pdfFilename = `${name.replace(/\s+/g, '')}.pdf`;
         await savePdf(pdfFilename, pdfContent);
 
-        // Append to pdfRecords.json
-        const pdfRecord = {
-            firstName: name.split(' ')[0],
-            lastName: name.split(' ')[1] || '',
-            email,
-            school
-        };
-        await updatePdfRecords(pdfRecord);
-
+        console.log("pdf save complete")
         // Send success response
         res.status(200).json({ message: 'PDF generated and saved successfully!' });
 
