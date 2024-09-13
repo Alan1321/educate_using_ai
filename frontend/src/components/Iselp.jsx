@@ -35,32 +35,35 @@ const Iselp = () => {
     setLoading(true);
     try {
       const timestamp = new Date().toISOString();
-      const response = await axios.get('http://localhost:3000/api/v1/gpt-response/iselp', {
-        params: {
-          timestamp,
-          name: `${formData.firstName} ${formData.lastName}`,
-          school: formData.school,
-          email: formData.email,
-          hobbies: formData.hobbies,
-          favorite_subjects: formData.favoriteSubjects,
-          goals: formData.goals,
-          school_impact: formData.schoolImpact,
-          school_experience: formData.schoolExperience,
-          desired_changes: formData.desiredChanges,
-          conflict_triggers: formData.conflictTriggers,
-          feelings_about_conflicts: formData.feelingsAboutConflicts,
-          grade_level: formData.gradeLevel,
-        },
-      });
-
-      setResponseText(response.data);
-      generatePDF(response.data);
+      const payload = {
+        timestamp,
+        name: `${formData.firstName} ${formData.lastName}`,
+        school: formData.school,
+        email: formData.email,
+        hobbies: formData.hobbies,
+        favorite_subjects: formData.favoriteSubjects,
+        goals: formData.goals,
+        school_impact: formData.schoolImpact,
+        school_experience: formData.schoolExperience,
+        desired_changes: formData.desiredChanges,
+        conflict_triggers: formData.conflictTriggers,
+        feelings_about_conflicts: formData.feelingsAboutConflicts,
+        grade_level: formData.gradeLevel,
+      };
+  
+      // Update the endpoint to post data to studentRecords.json
+      const response = await axios.post('http://localhost:3000/api/files/studentRecords.json', payload);
+  
+      console.log('Data posted successfully:', response.data);
+      // You can add navigation or redirect logic here if needed
+  
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error sending data:', error);
     } finally {
       setLoading(false);
     }
   };
+  
 
   const generatePDF = (responseText) => {
     const doc = new jsPDF();

@@ -56,32 +56,35 @@ const AdultForm = () => {
         timestamp: new Date().toISOString(),
         ...formData,
       };
-
-      const response = await axios.get('http://localhost:3000/api/v1/saveAdultData', { params });
-
+  
+      // Change the API endpoint to match your backend's new structure
+      const response = await axios.post('http://localhost:3000/api/files/adultRecords.json', params);
+  
       console.log('API Response:', response.data);
-
-      setFormData({
-        name: '',
-        email: '',
-        school: '',
-        studentName: '',
-        role: '',
-        engagementPerformance: '',
-        effectiveStrategies: '',
-        schoolSupport: '',
-        existingPrograms: '',
-        communication: '',
-        involvement: '',
-        conflictPatterns: '',
-        timesOfDistress: '',
-        homeSupportSystems: '',
-        externalStressors: '',
-      });
+  
+      // Clear the form after submission
+      // setFormData({
+      //   name: '',
+      //   email: '',
+      //   school: '',
+      //   studentName: '',
+      //   role: '',
+      //   engagementPerformance: '',
+      //   effectiveStrategies: '',
+      //   schoolSupport: '',
+      //   existingPrograms: '',
+      //   communication: '',
+      //   involvement: '',
+      //   conflictPatterns: '',
+      //   timesOfDistress: '',
+      //   homeSupportSystems: '',
+      //   externalStressors: '',
+      // });
     } catch (error) {
       console.error('API Error:', error);
     }
   };
+  
 
   return (
     <Container maxWidth="lg" className="adultform-container">
