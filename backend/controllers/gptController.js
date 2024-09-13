@@ -1,5 +1,6 @@
 const { Configuration, OpenAIApi } = require('openai');
 const promptData = require('../models/prompt.json'); // Assuming the file path is correct
+const pdf = require('pdfkit'); // Or any other PDF library of your choice
 const fs = require('fs');
 const path = require('path');
 const OpenAI = require('openai');
@@ -9,46 +10,38 @@ const openai = new OpenAI({
     apiKey: process.env.KEY1, // Ensure you have an environment variable set up for the API key
 });
 
-const updateStudentRecords = (newRecord) => {
-    // Define the path to your JSON file
-    const filePath = path.resolve(__dirname, '../../frontend/src/data/studentRecords.json');
+// Function to save the PDF
+const savePdf = (filename, content) => {
+    return new Promise((resolve, reject) => {
+        const filePath = path.resolve(__dirname, '../models/pdfs/', filename);
+        const doc = new pdf();
 
-    // Read the existing data from the file
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            console.error('Error reading the file:', err);
-            return;
-        }
+        doc.pipe(fs.createWriteStream(filePath));
+        doc.text(content);
+        doc.end();
 
-        let records;
-        try {
-            // Parse the existing data
-            records = JSON.parse(data);
-        } catch (parseErr) {
-            console.error('Error parsing JSON data:', parseErr);
-            return;
-        }
-
-        // Append the new record
-        records.push(newRecord);
-
-        // Convert the updated data back to JSON format
-        const updatedData = JSON.stringify(records, null, 2);
-
-        // Write the updated data to the file
-        fs.writeFile(filePath, updatedData, 'utf8', (writeErr) => {
-            if (writeErr) {
-                console.error('Error writing to the file:', writeErr);
-                return;
-            }
-            console.log('Student record updated successfully!');
-        });
+        doc.on('finish', () => resolve(filePath));
+        doc.on('error', (err) => reject('Error saving PDF: ' + err));
     });
 };
 
-exports.gptResponse = async (req, res) => {
+// Function to update pdfRecords.json
+const updatePdfRecords = async (record) => {
+    const filePath = path.resolve(__dirname, '../../frontend/src/data/pdfRecords.json');
+
     try {
-        // Access the query parameters from the URL
+        let records = await readJsonFile(filePath);
+        records.push(record);
+        await writeJsonFile(filePath, records);
+    } catch (error) {
+        throw new Error('Failed to update pdfRecords.json: ' + error);
+    }
+};
+
+exports.gptResponse = async (req, res) => {
+    console.log("Request Query:", req.query);
+    try {
+        // Extract and log query parameters
         const {
             timestamp,
             name,
@@ -65,7 +58,10 @@ exports.gptResponse = async (req, res) => {
             grade_level
         } = req.query;
 
-        // Create user data as string (for prompt2)
+        if (!name || !school || !email) {
+            throw new Error('Required parameters are missing');
+        }
+
         const userData = `
         Timestamp: ${timestamp}
         Name: ${name}
@@ -82,32 +78,38 @@ exports.gptResponse = async (req, res) => {
         Grade Level: ${grade_level}
         `;
 
-        updateStudentRecords(req.query)
-
-        console.log("sending api call to GPT")
-        // Combine prompt1, user_data (prompt2), and prompt3 from prompt.json
+        console.log("Sending API call to GPT");
         const fullPrompt = `${promptData[0].prompt1} ${userData} ${promptData[0].prompt3}`;
 
         const completion = await openai.chat.completions.create({
-            model: "gpt-4", // Correct model name, "gpt-4o-mini" is not valid
+            model: "gpt-4",
             messages: [
                 { role: "system", content: "You are a helpful assistant." },
-                {
-                    role: "user",
-                    content: fullPrompt,
-                },
+                { role: "user", content: fullPrompt },
             ],
         });
-        console.log("complete!")
-        // Send the GPT response back to the user
-        res.json({
-            message: "ISELP Generated",
-            prompt:fullPrompt,
-            gpt_response: completion.choices[0].message.content // Extracting the GPT response text
-        });
+        console.log("Completion received!");
+
+        // Save the generated PDF
+        const pdfContent = completion.choices[0].message.content;
+        const pdfFilename = `${name.replace(/\s+/g, '')}.pdf`;
+        await savePdf(pdfFilename, pdfContent);
+
+        // Append to pdfRecords.json
+        const pdfRecord = {
+            firstName: name.split(' ')[0],
+            lastName: name.split(' ')[1] || '',
+            email,
+            school
+        };
+        await updatePdfRecords(pdfRecord);
+
+        // Send success response
+        res.status(200).json({ message: 'PDF generated and saved successfully!' });
 
     } catch (error) {
         console.error('Error generating GPT response:', error);
-        res.status(500).json({ error: "Failed to generate GPT response" });
+        res.status(500).json({ message: 'Failed to generate PDF' });
     }
 };
+
