@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button
 } from '@mui/material';
@@ -6,17 +6,22 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import studentRecords from '../data/studentRecords.json';
 import adultRecords from '../data/adultRecords.json';
+import pdfRecords from '../data/pdfRecords.json'; // Import pdfRecords.json
 import "./Admin.css";
 
 const Admin = () => {
   // State to manage loading state for each student
   const [loading, setLoading] = useState({});
+  const [mappedStudentRecords, setMappedStudentRecords] = useState([]);
 
-  // Map studentRecords to have a studentName property
-  const mappedStudentRecords = studentRecords.map(record => ({
-    ...record,
-    studentName: record.name
-  }));
+  useEffect(() => {
+    // Map studentRecords to have a studentName property
+    const mappedRecords = studentRecords.map(record => ({
+      ...record,
+      studentName: record.name
+    }));
+    setMappedStudentRecords(mappedRecords);
+  }, []);
 
   const renderAdultSurveyIcon = (studentName) => {
     const adultRecord = adultRecords.find(record => record.studentName === studentName);
@@ -27,11 +32,17 @@ const Admin = () => {
     );
   };
 
+  const isPdfRecord = (student) => {
+    return pdfRecords.some(record =>
+      record.firstName === student.studentName.split(' ')[0] &&
+      record.lastName === (student.studentName.split(' ')[1] || '')
+    );
+  };
+
   const renderActionButton = (student) => {
     const isLoading = loading[student.studentName] || false;
-    const adultRecord = adultRecords.find(record => record.studentName === student.studentName);
 
-    return adultRecord ? (
+    return isPdfRecord(student) ? (
       <Button
         variant="contained"
         color="secondary"
